@@ -196,13 +196,17 @@
 #  define TracyMessageC( txt, size, color ) tracy::Profiler::MessageColor( txt, size, color, TRACY_CALLSTACK )
 #  define TracyMessageLC( txt, color ) tracy::Profiler::MessageColor( txt, color, TRACY_CALLSTACK )
 
+#  define TracyAllocTag( ptr, size, tag ) tracy::Profiler::MemAllocCallstack( ptr, size, TRACY_CALLSTACK, false, tag )
 #  define TracyAlloc( ptr, size ) tracy::Profiler::MemAllocCallstack( ptr, size, TRACY_CALLSTACK, false )
 #  define TracyFree( ptr ) tracy::Profiler::MemFreeCallstack( ptr, TRACY_CALLSTACK, false )
+#  define TracySecureAllocTag( ptr, size, tag ) tracy::Profiler::MemAllocCallstack( ptr, size, TRACY_CALLSTACK, true, tag )
 #  define TracySecureAlloc( ptr, size ) tracy::Profiler::MemAllocCallstack( ptr, size, TRACY_CALLSTACK, true )
 #  define TracySecureFree( ptr ) tracy::Profiler::MemFreeCallstack( ptr, TRACY_CALLSTACK, true )
 
+#  define TracyAllocNTag( ptr, size, name, tag ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, TRACY_CALLSTACK, false, name, tag )
 #  define TracyAllocN( ptr, size, name ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, TRACY_CALLSTACK, false, name )
 #  define TracyFreeN( ptr, name ) tracy::Profiler::MemFreeCallstackNamed( ptr, TRACY_CALLSTACK, false, name )
+#  define TracySecureAllocNTag( ptr, size, name, tag ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, TRACY_CALLSTACK, true, name, tag )
 #  define TracySecureAllocN( ptr, size, name ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, TRACY_CALLSTACK, true, name )
 #  define TracySecureFreeN( ptr, name ) tracy::Profiler::MemFreeCallstackNamed( ptr, TRACY_CALLSTACK, true, name )
 #else
@@ -211,13 +215,17 @@
 #  define TracyMessageC( txt, size, color ) tracy::Profiler::MessageColor( txt, size, color, 0 )
 #  define TracyMessageLC( txt, color ) tracy::Profiler::MessageColor( txt, color, 0 )
 
+#  define TracyAllocTag( ptr, size, tag ) tracy::Profiler::MemAlloc( ptr, size, false, tag )
 #  define TracyAlloc( ptr, size ) tracy::Profiler::MemAlloc( ptr, size, false )
 #  define TracyFree( ptr ) tracy::Profiler::MemFree( ptr, false )
+#  define TracySecureAllocTag( ptr, size, tag ) tracy::Profiler::MemAlloc( ptr, size, true, tag )
 #  define TracySecureAlloc( ptr, size ) tracy::Profiler::MemAlloc( ptr, size, true )
 #  define TracySecureFree( ptr ) tracy::Profiler::MemFree( ptr, true )
 
+#  define TracyAllocNTag( ptr, size, name, tag ) tracy::Profiler::MemAllocNamed( ptr, size, false, name, tag )
 #  define TracyAllocN( ptr, size, name ) tracy::Profiler::MemAllocNamed( ptr, size, false, name )
 #  define TracyFreeN( ptr, name ) tracy::Profiler::MemFreeNamed( ptr, false, name )
+#  define TracySecureAllocNTag( ptr, size, name, tag ) tracy::Profiler::MemAllocNamed( ptr, size, true, name, tag )
 #  define TracySecureAllocN( ptr, size, name ) tracy::Profiler::MemAllocNamed( ptr, size, true, name )
 #  define TracySecureFreeN( ptr, name ) tracy::Profiler::MemFreeNamed( ptr, true, name )
 #endif
@@ -236,13 +244,17 @@
 #  define ZoneScopedCS( color, depth ) ZoneNamedCS( ___tracy_scoped_zone, color, depth, true )
 #  define ZoneScopedNCS( name, color, depth ) ZoneNamedNCS( ___tracy_scoped_zone, name, color, depth, true )
 
+#  define TracyAllocSTag( ptr, size, depth, tag ) tracy::Profiler::MemAllocCallstack( ptr, size, depth, false, tag )
 #  define TracyAllocS( ptr, size, depth ) tracy::Profiler::MemAllocCallstack( ptr, size, depth, false )
 #  define TracyFreeS( ptr, depth ) tracy::Profiler::MemFreeCallstack( ptr, depth, false )
+#  define TracySecureAllocSTag( ptr, size, depth, tag ) tracy::Profiler::MemAllocCallstack( ptr, size, depth, true, tag )
 #  define TracySecureAllocS( ptr, size, depth ) tracy::Profiler::MemAllocCallstack( ptr, size, depth, true )
 #  define TracySecureFreeS( ptr, depth ) tracy::Profiler::MemFreeCallstack( ptr, depth, true )
 
+#  define TracyAllocNSTag( ptr, size, depth, name, tag ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, depth, false, name, tag )
 #  define TracyAllocNS( ptr, size, depth, name ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, depth, false, name )
 #  define TracyFreeNS( ptr, depth, name ) tracy::Profiler::MemFreeCallstackNamed( ptr, depth, false, name )
+#  define TracySecureAllocNSTag( ptr, size, depth, name, tag ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, depth, true, name, tag )
 #  define TracySecureAllocNS( ptr, size, depth, name ) tracy::Profiler::MemAllocCallstackNamed( ptr, size, depth, true, name )
 #  define TracySecureFreeNS( ptr, depth, name ) tracy::Profiler::MemFreeCallstackNamed( ptr, depth, true, name )
 

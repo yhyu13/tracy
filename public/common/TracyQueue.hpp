@@ -482,7 +482,8 @@ struct QueueMemAlloc
     int64_t time;
     uint32_t thread;
     uint64_t ptr;
-    char size[6];
+    char size[5];
+    uint8_t llmtag;
 };
 
 struct QueueMemFree
