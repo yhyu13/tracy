@@ -5961,13 +5961,15 @@ MemEvent* Worker::ProcessMemAllocImpl( MemData& memdata, const QueueMemAlloc& ev
 
     const auto ptr = ev.ptr;
     uint32_t lo;
-    uint16_t hi;
+    uint8_t hi;
     memcpy( &lo, ev.size, 4 );
-    memcpy( &hi, ev.size+4, 2 );
+    memcpy( &hi, ev.size+4, 1 );
     const uint64_t size = lo | ( uint64_t( hi ) << 32 );
+    const auto llmtag = ev.llmtag;
 
     auto& mem = memdata.data.push_next();
     mem.SetPtr( ptr );
+    mem.SetLlmTag( llmtag );
     mem.SetSize( size );
     mem.SetTimeThreadAlloc( time, CompressThread( ev.thread ) );
     mem.SetTimeThreadFree( -1, 0 );
