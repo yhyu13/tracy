@@ -538,6 +538,7 @@ void View::DrawMemoryAllocWindow()
             ImGui::SameLine();
             ImGui::TextDisabled( "(%s bytes)", RealToString( ev.Size() ) );
         }
+        TextFocused( "Tag:",  LLMTagToString( ev.LLMTag() ) );
         ImGui::Separator();
         TextFocused( "Appeared at", TimeToStringExact( ev.TimeAlloc() ) );
         if( ImGui::IsItemClicked() ) CenterAtTime( ev.TimeAlloc() );

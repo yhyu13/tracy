@@ -3,6 +3,7 @@
 
 #include "../common/TracyColor.hpp"
 #include "../common/TracySystem.hpp"
+#include "../common/TracyLLM.hpp"
 
 #ifndef TracyFunction
 #  define TracyFunction __FUNCTION__

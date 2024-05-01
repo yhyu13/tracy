@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include "TracyPrint.hpp"
+#include "TracyLLM.hpp"
 
 namespace tracy
 {
@@ -424,6 +425,22 @@ const char* MemSizeToString( int64_t val )
     *ptr++ = '\0';
 
     return buf;
+}
+
+const char* LLMTagToString( int8_t tag )
+{
+    if (auto TagIndex = llm::generic::CastToGenericLLMTag(tag);TagIndex >= 0)
+    {
+        return llm::generic::GetGenericLLMTagName(tag);
+    }
+    else if (auto TagIndex = llm::custom::CastToCustomLLMTag(tag);TagIndex >= 0)
+    {
+        return llm::custom::GetCustomLLMTagName(tag);
+    }
+    else
+    {
+        return "Invalid LLM Tag";
+    }
 }
 
 const char* LocationToString( const char* fn, uint32_t line )

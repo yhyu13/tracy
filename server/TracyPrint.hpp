@@ -129,6 +129,7 @@ static inline const char* RealToString( double val )
 const char* TimeToString( int64_t ns );
 const char* TimeToStringExact( int64_t ns );
 const char* MemSizeToString( int64_t val );
+const char* LLMTagToString( int8_t tag );
 const char* LocationToString( const char* fn, uint32_t line );
 
 static tracy_force_inline void PrintStringPercent( char* buf, const char* string, double percent )

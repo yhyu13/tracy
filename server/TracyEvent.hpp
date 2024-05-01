@@ -422,8 +422,8 @@ struct MemEvent
 {
     tracy_force_inline uint64_t Ptr() const { return uint64_t( int64_t( _ptr_csalloc1 ) >> 8 ); }
     tracy_force_inline void SetPtr( uint64_t ptr ) { memcpy( ((char*)&_ptr_csalloc1)+1, &ptr, 4 ); memcpy( ((char*)&_ptr_csalloc1)+5, ((char*)&ptr)+4, 2 ); memcpy( ((char*)&_ptr_csalloc1)+7, ((char*)&ptr)+6, 1 ); }
-    tracy_force_inline uint8_t LlmTag() const { return uint8_t(_size_csalloc2 >> 56); }
-    tracy_force_inline void SetLlmTag(uint8_t tag) const { memcpy( ((char*)&_size_csalloc2)+7, &tag, 1 ); }
+    tracy_force_inline uint8_t LLMTag() const { return uint8_t(_size_csalloc2 >> 56); }
+    tracy_force_inline void SetLLMTag(uint8_t tag) const { memcpy( ((char*)&_size_csalloc2)+7, &tag, 1 ); }
     tracy_force_inline uint64_t Size() const { return (_size_csalloc2 & ~(0xFFull << 56)) >> 16; }
     tracy_force_inline void SetSize( uint64_t size ) { assert( size < ( 1ull << 40 ) ); memcpy( ((char*)&_size_csalloc2)+2, &size, 4 ); memcpy( ((char*)&_size_csalloc2)+6, ((char*)&size)+4, 1 ); }
     tracy_force_inline uint32_t CsAlloc() const { return uint8_t( _ptr_csalloc1 ) | ( uint16_t( _size_csalloc2 ) << 8 ); }

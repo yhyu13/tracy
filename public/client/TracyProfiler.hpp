@@ -483,7 +483,7 @@ public:
         TracyLfqCommit;
     }
 
-    static tracy_force_inline void MemAlloc( const void* ptr, size_t size, bool secure, uint8_t llmTag = 255 )
+    static tracy_force_inline void MemAlloc( const void* ptr, size_t size, bool secure, uint8_t llmTag = 0 )
     {
         if( secure && !ProfilerAvailable() ) return;
 #ifdef TRACY_ON_DEMAND
@@ -509,7 +509,7 @@ public:
         GetProfiler().m_serialLock.unlock();
     }
 
-    static tracy_force_inline void MemAllocCallstack( const void* ptr, size_t size, int depth, bool secure, uint8_t llmTag = 255 )
+    static tracy_force_inline void MemAllocCallstack( const void* ptr, size_t size, int depth, bool secure, uint8_t llmTag = 0 )
     {
         if( secure && !ProfilerAvailable() ) return;
 #ifdef TRACY_HAS_CALLSTACK
@@ -558,7 +558,7 @@ public:
 #endif
     }
 
-    static tracy_force_inline void MemAllocNamed( const void* ptr, size_t size, bool secure, const char* name, uint8_t llmTag = 255 )
+    static tracy_force_inline void MemAllocNamed( const void* ptr, size_t size, bool secure, const char* name, uint8_t llmTag = 0 )
     {
         if( secure && !ProfilerAvailable() ) return;
 #ifdef TRACY_ON_DEMAND
@@ -586,7 +586,7 @@ public:
         GetProfiler().m_serialLock.unlock();
     }
 
-    static tracy_force_inline void MemAllocCallstackNamed( const void* ptr, size_t size, int depth, bool secure, const char* name, uint8_t llmTag = 255 )
+    static tracy_force_inline void MemAllocCallstackNamed( const void* ptr, size_t size, int depth, bool secure, const char* name, uint8_t llmTag = 0 )
     {
         if( secure && !ProfilerAvailable() ) return;
 #ifdef TRACY_HAS_CALLSTACK

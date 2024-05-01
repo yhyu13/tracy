@@ -1164,6 +1164,9 @@ Worker::Worker( FileRead& f, EventType::Type eventMask, bool bgTasks, bool allow
                 uint16_t threadAlloc, threadFree;
                 f.Read8( ptr, size, csAlloc, mem->csFree, timeAlloc, timeFree, threadAlloc, threadFree );
                 mem->SetPtr( ptr );
+                uint8_t llmtag = size >> 56; // Get llm tag from the highest byte
+                mem->SetLLMTag( llmtag );
+                size = size & ~(0xFFull << 56); // Clear llm tag before set size
                 mem->SetSize( size );
                 mem->SetCsAlloc( csAlloc.Val() );
                 refTime += timeAlloc;
@@ -5969,7 +5972,7 @@ MemEvent* Worker::ProcessMemAllocImpl( MemData& memdata, const QueueMemAlloc& ev
 
     auto& mem = memdata.data.push_next();
     mem.SetPtr( ptr );
-    mem.SetLlmTag( llmtag );
+    mem.SetLLMTag( llmtag );
     mem.SetSize( size );
     mem.SetTimeThreadAlloc( time, CompressThread( ev.thread ) );
     mem.SetTimeThreadFree( -1, 0 );
