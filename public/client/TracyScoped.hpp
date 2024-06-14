@@ -17,6 +17,24 @@ namespace tracy
 class ScopedZone
 {
 public:
+    static bool Begin( const SourceLocationData* srcloc, bool is_active = true )
+    {
+        if( !GetProfiler().IsConnected() ) return false;
+        TracyQueuePrepare( QueueType::ZoneBegin );
+        MemWrite( &item->zoneBegin.time, Profiler::GetTime() );
+        MemWrite( &item->zoneBegin.srcloc, (uint64_t)srcloc );
+        TracyQueueCommit( zoneBeginThread );
+        return true;
+    }
+
+    static void End()
+    {
+        if( !GetProfiler().IsConnected() ) return;
+        TracyQueuePrepare( QueueType::ZoneEnd );
+        MemWrite( &item->zoneEnd.time, Profiler::GetTime() );
+        TracyQueueCommit( zoneEndThread );
+    }
+
     ScopedZone( const ScopedZone& ) = delete;
     ScopedZone( ScopedZone&& ) = delete;
     ScopedZone& operator=( const ScopedZone& ) = delete;

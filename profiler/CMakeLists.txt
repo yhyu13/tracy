@@ -25,7 +25,7 @@ set(SERVER_FILES
     TracyColor.cpp
     TracyEventDebug.cpp
     TracyFileselector.cpp
-    TracyFilesystem.cpp
+    TracyFilesystem.cpp 
     TracyImGui.cpp
     TracyMicroArchitecture.cpp
     TracyMouse.cpp

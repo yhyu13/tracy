@@ -21,8 +21,8 @@ tracy_no_inline static void InitRpmallocPlumbing()
     {
         int expected = 0;
         while( !RpInitLock.compare_exchange_weak( expected, 1, std::memory_order_release, std::memory_order_relaxed ) ) { expected = 0; YieldThread(); }
-        const auto done = RpInitDone.load( std::memory_order_acquire );
-        if( !done )
+        const auto _done = RpInitDone.load( std::memory_order_acquire );
+        if( !_done )
         {
             rpmalloc_initialize();
             RpInitDone.store( 1, std::memory_order_release );

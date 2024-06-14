@@ -2568,10 +2568,10 @@ Profiler::DequeueStatus Profiler::Dequeue( moodycamel::ConsumerToken& token )
                     case QueueType::SymbolCodeMetadata:
                     {
                         auto symbol = MemRead<uint64_t>( &item->symbolCodeMetadata.symbol );
-                        auto ptr = (const char*)MemRead<uint64_t>( &item->symbolCodeMetadata.ptr );
-                        auto size = MemRead<uint32_t>( &item->symbolCodeMetadata.size );
-                        SendLongString( symbol, ptr, size, QueueType::SymbolCode );
-                        tracy_free_fast( (void*)ptr );
+                        auto _ptr = (const char*)MemRead<uint64_t>( &item->symbolCodeMetadata.ptr );
+                        auto _size = MemRead<uint32_t>( &item->symbolCodeMetadata.size );
+                        SendLongString( symbol, _ptr, _size, QueueType::SymbolCode );
+                        tracy_free_fast( (void*)_ptr );
                         ++item;
                         continue;
                     }
@@ -2592,11 +2592,11 @@ Profiler::DequeueStatus Profiler::Dequeue( moodycamel::ConsumerToken& token )
 #endif
                     case QueueType::SourceCodeMetadata:
                     {
-                        auto ptr = (const char*)MemRead<uint64_t>( &item->sourceCodeMetadata.ptr );
-                        auto size = MemRead<uint32_t>( &item->sourceCodeMetadata.size );
+                        auto _ptr = (const char*)MemRead<uint64_t>( &item->sourceCodeMetadata.ptr );
+                        auto _size = MemRead<uint32_t>( &item->sourceCodeMetadata.size );
                         auto id = MemRead<uint32_t>( &item->sourceCodeMetadata.id );
-                        SendLongString( (uint64_t)id, ptr, size, QueueType::SourceCode );
-                        tracy_free_fast( (void*)ptr );
+                        SendLongString( (uint64_t)id, _ptr, _size, QueueType::SourceCode );
+                        tracy_free_fast( (void*)_ptr );
                         ++item;
                         continue;
                     }
@@ -4250,11 +4250,11 @@ TRACY_API void ___tracy_emit_memory_free_callstack_named( const void* ptr, int d
 TRACY_API void ___tracy_emit_frame_mark( const char* name ) { tracy::Profiler::SendFrameMark( name ); }
 TRACY_API void ___tracy_emit_frame_mark_start( const char* name ) { tracy::Profiler::SendFrameMark( name, tracy::QueueType::FrameMarkMsgStart ); }
 TRACY_API void ___tracy_emit_frame_mark_end( const char* name ) { tracy::Profiler::SendFrameMark( name, tracy::QueueType::FrameMarkMsgEnd ); }
-TRACY_API void ___tracy_emit_frame_image( const void* image, uint16_t w, uint16_t h, uint8_t offset, int flip ) { tracy::Profiler::SendFrameImage( image, w, h, offset, flip ); }
+TRACY_API void ___tracy_emit_frame_image( const void* image, uint16_t w, uint16_t h, uint8_t offset, int flip ) { tracy::Profiler::SendFrameImage( image, w, h, offset, static_cast<bool>(flip) ); }
 TRACY_API void ___tracy_emit_plot( const char* name, double val ) { tracy::Profiler::PlotData( name, val ); }
 TRACY_API void ___tracy_emit_plot_float( const char* name, float val ) { tracy::Profiler::PlotData( name, val ); }
 TRACY_API void ___tracy_emit_plot_int( const char* name, int64_t val ) { tracy::Profiler::PlotData( name, val ); }
-TRACY_API void ___tracy_emit_plot_config( const char* name, int type, int step, int fill, uint32_t color ) { tracy::Profiler::ConfigurePlot( name, tracy::PlotFormatType(type), step, fill, color ); }
+TRACY_API void ___tracy_emit_plot_config( const char* name, int type, int step, int fill, uint32_t color ) { tracy::Profiler::ConfigurePlot( name, tracy::PlotFormatType(type), static_cast<bool>(step), static_cast<bool>(fill), color ); }
 TRACY_API void ___tracy_emit_message( const char* txt, size_t size, int callstack ) { tracy::Profiler::Message( txt, size, callstack ); }
 TRACY_API void ___tracy_emit_messageL( const char* txt, int callstack ) { tracy::Profiler::Message( txt, callstack ); }
 TRACY_API void ___tracy_emit_messageC( const char* txt, size_t size, uint32_t color, int callstack ) { tracy::Profiler::MessageColor( txt, size, color, callstack ); }

@@ -397,8 +397,8 @@ void InitCallstack()
                 memcpy( buf+len+1, ">", 2 );
                 s_krnlCache[cnt] = KernelDriver { (uint64_t)dev[i], buf };
 
-                const auto len = GetDeviceDriverFileNameA( dev[i], fn, sizeof( fn ) );
-                if( len != 0 )
+                const auto _len = GetDeviceDriverFileNameA( dev[i], fn, sizeof( fn ) );
+                if( _len != 0 )
                 {
                     char full[MAX_PATH];
                     char* path = fn;
