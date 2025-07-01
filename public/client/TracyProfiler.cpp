@@ -129,7 +129,8 @@ extern char* __progname;
 
 namespace tracy
 {
-
+std::atomic_flag CallStackLock{ATOMIC_FLAG_INIT};
+thread_local int ScopedZoneCount{0};
 #ifdef __ANDROID__
 // Implementation helpers of EnsureReadable(address).
 // This is so far only needed on Android, where it is common for libraries to be mapped

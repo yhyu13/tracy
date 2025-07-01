@@ -48,6 +48,8 @@
 
 namespace tracy
 {
+    extern std::atomic_flag CallStackLock; // YuHang : Memory allocation in call stack needs critical section
+    
 #if defined(TRACY_DELAYED_INIT) && defined(TRACY_MANUAL_LIFETIME)
 TRACY_API void StartupProfiler();
 TRACY_API void ShutdownProfiler();
@@ -635,7 +637,19 @@ public:
     static tracy_force_inline void SendCallstack( int depth )
     {
 #ifdef TRACY_HAS_CALLSTACK
-        auto ptr = Callstack( depth );
+        // YuHang : Memory allocation in call stack needs critical section
+        //auto ptr = Callstack( depth );
+        void* ptr = nullptr;
+        {
+            while (CallStackLock.test_and_set(std::memory_order_acquire))
+            {
+                std::this_thread::yield();
+            }
+            {
+                ptr = Callstack( depth );
+            }
+            CallStackLock.clear(std::memory_order_release);
+        }
         TracyQueuePrepare( QueueType::Callstack );
         MemWrite( &item->callstackFat.ptr, (uint64_t)ptr );
         TracyQueueCommit( callstackFatThread );
