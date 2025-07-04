@@ -25,6 +25,7 @@ else()
         NAME capstone
         GITHUB_REPOSITORY capstone-engine/capstone
         GIT_TAG 5.0.1
+        HTTP_PROXY "${HTTP_PROXY}"
     )
     add_library(TracyCapstone INTERFACE)
     target_include_directories(TracyCapstone INTERFACE ${capstone_SOURCE_DIR}/include/capstone)
@@ -44,6 +45,7 @@ if(NOT USE_WAYLAND AND NOT EMSCRIPTEN)
             NAME glfw
             GITHUB_REPOSITORY glfw/glfw
             GIT_TAG 3.3.9
+            HTTP_PROXY "${HTTP_PROXY}"
             OPTIONS
                 "GLFW_BUILD_EXAMPLES OFF"
                 "GLFW_BUILD_TESTS OFF"
@@ -67,6 +69,7 @@ else()
         NAME freetype
         GITHUB_REPOSITORY freetype/freetype
         GIT_TAG VER-2-10-0
+        HTTP_PROXY "${HTTP_PROXY}"
         OPTIONS
             "FT_DISABLE_HARFBUZZ ON"
             "FT_WITH_HARFBUZZ OFF"
@@ -229,6 +232,7 @@ if (UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
             GITHUB_REPOSITORY oneapi-src/oneTBB
             GIT_TAG v2021.12.0-rc2
             OPTIONS "TBB_TEST OFF"
+            HTTP_PROXY "${HTTP_PROXY}"
         )
         add_library(TracyTbb INTERFACE)
         target_link_libraries(TracyTbb INTERFACE tbb)
