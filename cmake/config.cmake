@@ -33,7 +33,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT EMSCRIPTEN)
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 endif()
 
-if(EMSCRIPTEN)
+if(UNIX OR EMSCRIPTEN)
     add_compile_options(-pthread)
     add_link_options(-pthread)
 endif()
