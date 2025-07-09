@@ -236,7 +236,7 @@ if (UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
             NAME tbb
             GITHUB_REPOSITORY oneapi-src/oneTBB
             GIT_TAG v2021.12.0-rc2
-            OPTIONS "TBB_TEST OFF" "BUILD_SHARED_LIBS ON"
+            OPTIONS "TBB_TEST OFF"
             
         )
         # Restore the old value of the parameter
