@@ -1002,17 +1002,19 @@ function(cpm_fetch_package PACKAGE populated)
     return()
   endif()
 
-  FetchContent_GetProperties(${PACKAGE})
+  FetchContent_MakeAvailable(${PACKAGE})
+
+  #FetchContent_GetProperties(${PACKAGE})
 
   string(TOLOWER "${PACKAGE}" lower_case_name)
 
-  if(NOT ${lower_case_name}_POPULATED)
-    FetchContent_Populate(${PACKAGE})
-    set(${populated}
-        TRUE
-        PARENT_SCOPE
-    )
-  endif()
+  # if(NOT ${lower_case_name}_POPULATED)
+  #   FetchContent_Populate(${PACKAGE})
+  #   set(${populated}
+  #       TRUE
+  #       PARENT_SCOPE
+  #   )
+  # endif()
 
   cpm_store_fetch_properties(
     ${CPM_ARGS_NAME} ${${lower_case_name}_SOURCE_DIR} ${${lower_case_name}_BINARY_DIR}
