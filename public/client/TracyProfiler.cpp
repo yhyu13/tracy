@@ -1591,7 +1591,7 @@ Profiler::~Profiler()
 
 bool Profiler::ShouldExit()
 {
-    return s_instance->m_shutdown.load( std::memory_order_relaxed );
+    return s_instance == nullptr || s_instance->m_shutdown.load( std::memory_order_relaxed );
 }
 
 void Profiler::Worker()
@@ -2027,6 +2027,9 @@ void Profiler::Worker()
 #ifdef TRACY_HAS_CALLSTACK
     while( s_symbolThreadGone.load() == false ) { YieldThread(); }
 #endif
+
+    m_shutdownFinished.store( true, std::memory_order_relaxed );
+    return;
 
     // Client is exiting. Send items remaining in queues.
     for(;;)
