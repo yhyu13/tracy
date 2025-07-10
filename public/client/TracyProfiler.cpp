@@ -2028,15 +2028,19 @@ void Profiler::Worker()
     while( s_symbolThreadGone.load() == false ) { YieldThread(); }
 #endif
 
-#if 1
+#ifdef TRACY_FORCE_EXIT_TIME_OUT // YuHang : maybe add exit timeout as an option
     // start time
     const auto last = std::chrono::steady_clock::now();
-    auto ShouldExitLoop = [last]() -> bool
+    auto _ShouldExitLoop = [last]() -> bool
     {
         // Force exit loop
         auto now = std::chrono::steady_clock::now();
         double diff = std::chrono::duration<double, std::ratio<1>>(now - last).count();
+#ifndef TRACY_FORCE_EXIT_TIME_OUT_SEC
         return diff > 1.0;
+#else
+        return diff > double(TRACY_FORCE_EXIT_TIME_OUT_SEC);
+#endif
     };
 #endif
 
@@ -2075,9 +2079,9 @@ void Profiler::Worker()
         }
 #endif
 
-#if 1
+#ifdef TRACY_FORCE_EXIT_TIME_OUT
         // Force exit loop
-        if (ShouldExitLoop())
+        if (_ShouldExitLoop())
         {
             break;
         }
@@ -2102,9 +2106,9 @@ void Profiler::Worker()
                 m_shutdownFinished.store( true, std::memory_order_relaxed );
                 return;
             }
-#if 1
+#ifdef TRACY_FORCE_EXIT_TIME_OUT
             // Force exit loop
-            if (ShouldExitLoop())
+            if (_ShouldExitLoop())
             {
                 break;
             }
@@ -2117,9 +2121,9 @@ void Profiler::Worker()
             if( !si ) break;
             HandleSymbolQueueItem( *si );
             m_symbolQueue.pop();
-#if 1
+#ifdef TRACY_FORCE_EXIT_TIME_OUT
             // Force exit loop
-            if (ShouldExitLoop())
+            if (_ShouldExitLoop())
             {
                 break;
             }
@@ -2142,15 +2146,15 @@ void Profiler::Worker()
             }
         }
 
-#if 1
+#ifdef TRACY_FORCE_EXIT_TIME_OUT
         // Force exit loop
-        if (ShouldExitLoop())
+        if (_ShouldExitLoop())
         {
             break;
         }
 #endif
     }
-#if 1
+#ifdef TRACY_FORCE_EXIT_TIME_OUT
     m_shutdownFinished.store( true, std::memory_order_relaxed );
 #endif
 }
