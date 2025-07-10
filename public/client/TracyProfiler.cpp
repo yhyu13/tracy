@@ -2028,8 +2028,10 @@ void Profiler::Worker()
     while( s_symbolThreadGone.load() == false ) { YieldThread(); }
 #endif
 
-    m_shutdownFinished.store( true, std::memory_order_relaxed );
-    return;
+#if 1
+    // start time
+    const auto last = std::chrono::steady_clock::now();
+#endif
 
     // Client is exiting. Send items remaining in queues.
     for(;;)
@@ -2063,6 +2065,16 @@ void Profiler::Worker()
             if( !si ) break;
             HandleSymbolQueueItem( *si );
             m_symbolQueue.pop();
+        }
+#endif
+
+#if 1
+        // Force exit loop
+        auto now = std::chrono::steady_clock::now();
+        double diff = std::chrono::duration<double, std::ratio<1>>(now - last).count();
+        if (diff > 10.0)
+        {
+            break;
         }
 #endif
     }
@@ -2110,7 +2122,20 @@ void Profiler::Worker()
                 return;
             }
         }
+
+#if 1
+        // Force exit loop
+        auto now = std::chrono::steady_clock::now();
+        double diff = std::chrono::duration<double, std::ratio<1>>(now - last).count();
+        if (diff > 1.0)
+        {
+            break;
+        }
+#endif
     }
+#if 1
+    m_shutdownFinished.store( true, std::memory_order_relaxed );
+#endif
 }
 
 #ifndef TRACY_NO_FRAME_IMAGE
