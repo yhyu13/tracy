@@ -2031,6 +2031,13 @@ void Profiler::Worker()
 #if 1
     // start time
     const auto last = std::chrono::steady_clock::now();
+    auto ShouldExitLoop = [last]() -> bool
+    {
+        // Force exit loop
+        auto now = std::chrono::steady_clock::now();
+        double diff = std::chrono::duration<double, std::ratio<1>>(now - last).count();
+        return diff > 1.0;
+    };
 #endif
 
     // Client is exiting. Send items remaining in queues.
@@ -2070,9 +2077,7 @@ void Profiler::Worker()
 
 #if 1
         // Force exit loop
-        auto now = std::chrono::steady_clock::now();
-        double diff = std::chrono::duration<double, std::ratio<1>>(now - last).count();
-        if (diff > 10.0)
+        if (ShouldExitLoop())
         {
             break;
         }
@@ -2097,6 +2102,13 @@ void Profiler::Worker()
                 m_shutdownFinished.store( true, std::memory_order_relaxed );
                 return;
             }
+#if 1
+            // Force exit loop
+            if (ShouldExitLoop())
+            {
+                break;
+            }
+#endif
         }
 #ifdef TRACY_HAS_CALLSTACK
         for(;;)
@@ -2105,6 +2117,13 @@ void Profiler::Worker()
             if( !si ) break;
             HandleSymbolQueueItem( *si );
             m_symbolQueue.pop();
+#if 1
+            // Force exit loop
+            if (ShouldExitLoop())
+            {
+                break;
+            }
+#endif
         }
 #endif
         const auto status = Dequeue( token );
@@ -2125,9 +2144,7 @@ void Profiler::Worker()
 
 #if 1
         // Force exit loop
-        auto now = std::chrono::steady_clock::now();
-        double diff = std::chrono::duration<double, std::ratio<1>>(now - last).count();
-        if (diff > 1.0)
+        if (ShouldExitLoop())
         {
             break;
         }
